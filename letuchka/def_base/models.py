@@ -16,7 +16,8 @@ class Profile(models.Model):
     )
 
     def __str__(self):
-        return f'#{self.external_id} {self.name}'
+        return f'{self.id}'  # {self.external_id}
+        # return f'#{self.external_id} {self.name}'   # def_base.Profile
 
     class Meta:
         verbose_name = 'Профиль'
@@ -36,14 +37,31 @@ class Definition(models.Model):
         verbose_name='Время получения',
         auto_now_add=True,
     )
-    definition = models.TextField(
-        verbose_name='Определение',
+    header_def = models.TextField(
+        verbose_name='Заголовок',
+    )   # default='The header',
+
+    def __str__(self):
+        return f'Определение {self.pk} от {self.profile}'
+
+    class Meta:
+        verbose_name = 'Опредление'
+        verbose_name_plural = 'Опредления'
+
+
+class Category(models.Model):
+    profile = models.ForeignKey(
+        to='def_base.Profile',
+        verbose_name='Профиль',
+        on_delete=models.PROTECT,
+    )
+    category = models.TextField(
+        verbose_name='Категория',
     )
 
     def __str__(self):
-        return f'Сообщение {self.pk} от {self.profile}'
+        return self.category
 
     class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
-
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
