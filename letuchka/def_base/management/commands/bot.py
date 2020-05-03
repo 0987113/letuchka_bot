@@ -10,7 +10,7 @@ from telegram import Update, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKe
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Filters, MessageHandler, ConversationHandler
 from .keyboards import get_buttons, get_keyboard_category, CATEGORIES, DEL_CATEGORY, NEW_CATEGORY
 
-# P = ""  # Variable 'p' for ask 'Profile'. Temporarily.
+
 START, ASK = range(2)
 data_from_base_categories = []
 
@@ -48,6 +48,7 @@ def try_handler(update, context):
 
 @log_errors
 def start_categories(update, context):
+    # TODO: Do not reply on message, but edit old message and edit old buttons
     global data_from_base_categories
     text = update.message.text
     p, _ = get_profile(update)
@@ -56,7 +57,6 @@ def start_categories(update, context):
         data_from_base_categories = []
         for i in categories:
             data_from_base_categories.append(str(i))
-        print(data_from_base_categories, type(data_from_base_categories))
         reply_markup = get_buttons(data_from_base_categories)
         update.message.reply_text(text='Выберете одну из категорий:', reply_markup=reply_markup)
     elif text == NEW_CATEGORY:
@@ -65,7 +65,8 @@ def start_categories(update, context):
     elif text == DEL_CATEGORY:
         pass
     else:
-        update.message.reply_text('Выберите нужное действие внизу:', reply_markup=get_keyboard_category())
+        update.message.reply_text('Вы не выбрали ничего')    # , reply_markup=ReplyKeyboardRemove())
+        return START
 
 
 @log_errors
@@ -73,7 +74,7 @@ def ask_handler(update, category_data: dict):
     category_name = update.message.text
     p, _ = get_profile(update)
     write_to_category(p=p, text=category_name)
-    update.message.reply_text('Записали!', reply_markup=get_keyboard_category())
+    update.message.reply_text('Записали!', reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 
