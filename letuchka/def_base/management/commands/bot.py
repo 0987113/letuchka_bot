@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# This program is dedicated to the public domain under the CC0 license.
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from .print import do_print
-from .bases import profile, write_to_category, read_from_base
+from .bases import profile, write_to_category, read_from_category, delete_category
 from telegram import Update, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Filters, MessageHandler, ConversationHandler
-from .keyboards import get_buttons, get_keyboard_category, CATEGORIES, DEL_CATEGORY, NEW_CATEGORY
-
-
-START, ASK = range(2)
-data_from_base_categories = []
+from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Filters, MessageHandler
+from .keyboards import get_buttons_category, get_keyboard_into
 
 
 def log_errors(f):
@@ -28,136 +22,93 @@ def log_errors(f):
 
 
 @log_errors
-def get_profile(update):
-    chat_id = update.message.chat_id
-    p, _ = profile(update, chat_id)
-    return p, _
-
-
-@log_errors
-def try_handler(update, context):
-    p, _ = get_profile(update)
-    if not _:
-        update.message.reply_text(text='С Возвращением!\nВыберите кнопки:', reply_markup=get_keyboard_category())
-        return START
-    else:
-        text = 'Добро пожаловать!\nВыберите категорию знаний, которые вы будите закреплять'
-        update.message.reply_text(text=text, reply_markup=get_keyboard_category())
-        return START
-
-
-@log_errors
-def start_categories(update, context):
-    # TODO: Do not reply on message, but edit old message and edit old buttons
-    global data_from_base_categories
-    text = update.message.text
-    p, _ = get_profile(update)
-    if text == CATEGORIES:
-        categories = read_from_base(p)
-        data_from_base_categories = []
-        for i in categories:
-            data_from_base_categories.append(str(i))
-        reply_markup = get_buttons(data_from_base_categories)
-        update.message.reply_text(text='Выберете одну из категорий:', reply_markup=reply_markup)
-    elif text == NEW_CATEGORY:
-        update.message.reply_text('Введите название новой категории:', reply_markup=ReplyKeyboardRemove())
-        return ASK
-    elif text == DEL_CATEGORY:
-        pass
-    else:
-        update.message.reply_text('Вы не выбрали ничего')    # , reply_markup=ReplyKeyboardRemove())
-        return START
-
-
-@log_errors
-def ask_handler(update, category_data: dict):
-    category_name = update.message.text
-    p, _ = get_profile(update)
-    write_to_category(p=p, text=category_name)
-    update.message.reply_text('Записали!', reply_markup=ReplyKeyboardRemove())
-    return ConversationHandler.END
-
-
-@log_errors
-def cancel(update: Update):
-    """
-    Отменить весь процесс диалога. Данные будут утеряны
-    """
-    if update.message.text == "/cancel":
-        update.message.reply_text("Отмена. Для начала с нуля нажмите /start")
-        return ConversationHandler.END
-
-
-@log_errors
-def button_inline(update, context):
-    query = update.callback_query
-    data = query.data
-    query.answer()
-
-    if data in data_from_base_categories:
-        query.edit_message_text(text=data, reply_markup=ReplyKeyboardRemove())
-    if data == '1':
-        text = f'Считать категории из бызы!'
-        query.edit_message_text(text=text)  # "Selected option: {}".format(query.data)
-    elif data == '2':
-        pass
-    elif data == '3':
-        pass
-
-
-@log_errors
-def do_start(update, context):
-    pass
-
-
-@log_errors
-def help(update, context):
-    update.message.reply_text("Use /start to test this bot.")
-
-
-@log_errors
-def main():
-    # Create the Updater and pass it your bot's token.
-    # Make sure to set use_context=True to use the new context based callbacks
-    # Post version 12 this will no longer be necessary
-    updater = Updater(token=settings.TG_TOKEN, base_url=settings.TG_PROXY_URL, use_context=True)
-
-    con_handler = ConversationHandler(
-        entry_points=[
-            CommandHandler("start", try_handler)
-        ],
-        states={
-            START: [
-                MessageHandler(Filters.all, start_categories, pass_user_data=True)  # pass_user_data -
-                # прокидывает данные из одной функции в другую
-            ],
-            ASK: [
-                MessageHandler(Filters.all, ask_handler, pass_user_data=True)
-            ],
-        },
-        fallbacks=[CommandHandler('cancel', cancel)]
-    )
-    updater.dispatcher.add_handler(con_handler)
-    updater.dispatcher.add_handler(CommandHandler('start_OLD', do_start))
-    updater.dispatcher.add_handler(CallbackQueryHandler(button_inline))
-    updater.dispatcher.add_handler(CommandHandler('help', help))
-    # updater.dispatcher.add_error_handler(error)
-    updater.dispatcher.add_handler(MessageHandler(Filters.text, do_print))
-
-    # Start the Bot
-    updater.start_polling()
-
-    # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT
-    updater.idle()
-
-
-@log_errors
 class Command(BaseCommand):
     help = 'Телеграм-бот'
+    data_add = None
+    global_chat_id = None
+    selected_category = None
 
+    @log_errors
+    def do_start(self, update, context):
+        self.global_chat_id = update.message.chat_id
+        p, _ = profile(update, self.global_chat_id)
+        reply_markup = get_buttons_category(read_from_category(p))
+        if not _:
+            update.message.reply_text(text='С Возвращением!\nВыберите Категорию:', reply_markup=reply_markup)
+        else:
+            text = 'Добро пожаловать!\nВыберите Категорию знаний, которые вы будите закреплять'
+            update.message.reply_text(text=text, reply_markup=reply_markup)
+
+    @log_errors
+    def do_print(self, update, context):
+        print('print')
+        self.global_chat_id = update.message.chat_id
+        p, _ = profile(update, self.global_chat_id)
+        print(p)
+        if self.data_add == '__<ADD>__':
+            write_to_category(p, update.message.text)
+            reply_markup = get_buttons_category(read_from_category(p))
+            text = f'Добавлена Категория "{update.message.text}"\n\nВыберите Категорию'
+            update.message.reply_text(text=text, reply_markup=reply_markup)
+        else:
+            update.message.reply_text(update.message.text)
+
+    @log_errors
+    def button_inline(self, update: Update, context):
+        print('button_inline')
+        query = update.callback_query
+        self.data_add = query.data
+        query.answer()
+        p, _ = profile(update, update.effective_message.chat_id)
+
+        if query.data == '__<ADD>__':
+            # Press button Add
+            text = 'Введите название новой Категории:'
+            query.edit_message_text(text=text)
+
+        elif query.data in [str(i) for i in read_from_category(p)] and query.data != '__<ADD>__':
+            # Press a Category
+            self.selected_category = query.data
+            text = f'Выбрана Категория "{self.selected_category}"\n\nВыберите кнопки:'
+            buttons_into_category = get_keyboard_into([
+                'Определения',
+                'Настройка',
+                'Удалить',
+                'Назад'
+            ])
+            query.edit_message_text(text=text, reply_markup=buttons_into_category)
+
+        elif self.selected_category and query.data == 'Удалить':
+            # Press button Add
+            delete_category(p, self.selected_category)
+            text = 'Категория удалена.\n\nВыберете Категорию:'
+            reply_markup = get_buttons_category(read_from_category(p))
+            query.edit_message_text(text=text, reply_markup=reply_markup)
+        else:
+            reply_markup = get_buttons_category(read_from_category(p))
+            query.edit_message_text(text=f'Думай!\n\n{query.data}', reply_markup=reply_markup)
+
+    @log_errors
+    def cancel(self, update, context):
+        # user = update.message.from_user
+        # logger.info("User %s canceled the conversation.", user.first_name)
+        update.message.reply_text('Bye! I hope we can talk again some day.')  # reply_markup=ReplyKeyboardRemove())
+
+    @log_errors
     def handle(self, *args, **options):
-        main()
+        updater = Updater(token=settings.TG_TOKEN, base_url=settings.TG_PROXY_URL, use_context=True)
+
+        updater.dispatcher.add_handler(CommandHandler('start', self.do_start))
+        updater.dispatcher.add_handler(CommandHandler('cancel', self.cancel))
+        updater.dispatcher.add_handler(CallbackQueryHandler(self.button_inline))
+        updater.dispatcher.add_handler(MessageHandler(Filters.text, self.do_print))
+
+        # Start the Bot
+        updater.start_polling()
+
+        # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
+        # SIGTERM or SIGABRT
+        updater.idle()
 
 
 if __name__ == '__main__':
