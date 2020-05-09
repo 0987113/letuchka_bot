@@ -1,7 +1,7 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
 
 
-def get_buttons_category(buttons: list):
+def get_buttons_cd(buttons: list):
     # TODO: Button del
     print('get_buttons:', len(buttons))
     keyboard = []

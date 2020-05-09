@@ -22,7 +22,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Definition)
 class DefAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'text', 'header_def',)
+    list_display = ('id', 'profile', 'category', 'text', 'header', 'question')
     form = DefForm
 
     '''def get_queryset(self, request):
@@ -31,7 +31,7 @@ class DefAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'category',)
+    list_display = ('id', 'profile', 'category', 'set_category')
     form = CategoryForm
 
 

@@ -18,20 +18,6 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-class DefForm(forms.ModelForm):
-
-    class Meta:
-        model = Definition
-        fields = (
-            'profile',
-            'text',
-            'header_def',
-        )
-        widgets = {
-            'header_def': forms.TextInput,
-        }
-
-
 class CategoryForm(forms.ModelForm):
 
     class Meta:
@@ -43,6 +29,23 @@ class CategoryForm(forms.ModelForm):
         widgets = {
             'category': forms.TextInput,
         }
+
+
+class DefForm(forms.ModelForm):
+
+    class Meta:
+        model = Definition
+        fields = (
+            'profile',
+            'category',
+            'text',
+            'header',
+
+        )
+        widgets = {
+            'header': forms.TextInput,
+        }
+
 
 
 

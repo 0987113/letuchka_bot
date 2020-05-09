@@ -24,21 +24,13 @@ def profile(update, chat_id):
     return p, _
 
 
-def definition(p, text):
-    d = Definition(
-        profile=p,
-        text=text,
-        header_def='The_header',
-    )
-    d.save()
-
-
 def read_from_category(p):
     whole_base = Category.objects.filter(profile=p)
     return whole_base
 
 
-def write_to_category(p, text):
+def write_to_name_category(p, text):
+    print('write_to_name_category')
     c = Category(
         profile=p,
         category=text,
@@ -46,8 +38,40 @@ def write_to_category(p, text):
     c.save()
 
 
+def write_to_set_category(p, category, set_category):
+    print('write_to_set_category', p, category, set_category)
+    # In the category to change the parameters
+    c = Category.objects.get(
+        profile=p,
+        category=category
+    )
+    c.set_category = set_category
+    c.save()
+
+
 def delete_category(p, text):
     print('delete_category', text)
-    c = Category.objects.filter(profile=p, category=text).delete()
+    Category.objects.filter(profile=p, category=text).delete()
 
+
+def write_to_definitions(p, category,  text, header, question):
+    print('write_to_definitions', text)
+    d = Definition(
+        profile=p,
+        category=category,
+        text=text,
+        header=header,
+        question=question,
+    )
+    d.save()
+
+
+def read_from_definitions(p, category):
+    whole_base = Definition.objects.filter(profile=p, category=category)
+    return whole_base
+
+
+def delete_definition(p, header):
+    print('delete_definition', header)
+    Definition.objects.filter(profile=p, header=header).delete()
 
