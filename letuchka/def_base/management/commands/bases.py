@@ -30,7 +30,6 @@ def read_from_category(p):
 
 
 def write_to_name_category(p, text):
-    print('write_to_name_category')
     c = Category(
         profile=p,
         category=text,
@@ -52,6 +51,7 @@ def write_to_set_category(p, category, set_category):
 def delete_category(p, text):
     print('delete_category', text)
     Category.objects.filter(profile=p, category=text).delete()
+    Definition.objects.filter(profile=p, category=text).delete()
 
 
 def write_to_definitions(p, category,  text, header, question):

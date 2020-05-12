@@ -2,7 +2,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton,
 
 
 def get_buttons_cd(buttons: list):
-    # TODO: Button del
+    # TODO: One function and two buttons on the row
     print('get_buttons:', len(buttons))
     keyboard = []
     button_add = InlineKeyboardButton('<Добавить>', callback_data='__<ADD>__')

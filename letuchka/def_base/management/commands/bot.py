@@ -7,8 +7,7 @@ from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Filters, MessageHandler
 from .keyboards import get_buttons_cd, get_keyboard_into
 from .buttons_handler import validate_weeks, validate_hours, WEEKS_MAP, HOURS_MAP
-from .bases import profile, write_to_name_category, read_from_category, delete_category, write_to_set_category, \
-    write_to_definitions, read_from_definitions, delete_definition
+from .bases import *
 
 
 def log_errors(f):
@@ -34,6 +33,7 @@ class Command(BaseCommand):
     name_definition = None
     question_definition = None
     set_category = None
+    var_into_category = None
     button_back = '<Назад>'
     button_yes = '<Да>'
     button_no = '<Нет>'
@@ -75,14 +75,20 @@ class Command(BaseCommand):
 
         if not self.selected_category and self.data_add_category == '__<ADD>__':
             # Press button <Добавить>
-            write_to_name_category(p, update.message.text)
-            reply_markup = get_buttons_cd(read_from_category(p))
-            self.data_add_category = None
-            self.selected_category = None
-            text = f"""__МЕНЮ КАТЕГОРИЙ__                                                                             .
-\n\nДобавлена Категория "{update.message.text}"
-\n\nВыберите Категорию"""
-            update.message.reply_text(text=text, reply_markup=reply_markup)
+
+            if update.message.text in [str(i) for i in read_from_category(p)]:
+                text = """__ДОБАВЛЕНИЕ КАТЕГОРИИ__\n\nВы ввели название уже имеющейся категории. 
+                Введите название новой Категории:"""
+                update.message.reply_text(text=text)
+            else:
+                write_to_name_category(p, update.message.text)
+                reply_markup = get_buttons_cd(read_from_category(p))
+                self.data_add_category = None
+                self.selected_category = None
+                text = f"""__МЕНЮ КАТЕГОРИЙ__                                                                         .
+    \n\nДобавлена Категория "{update.message.text}"
+    \n\nВыберите Категорию"""
+                update.message.reply_text(text=text, reply_markup=reply_markup)
 
         elif self.selected_category and self.set_category and self.data_set == self.button_settings:
             # Press button Category -> Настройка -> Настройка недели
@@ -95,18 +101,23 @@ class Command(BaseCommand):
         elif self.selected_category and self.data_add_definition == '__<ADD>__':
             # Press a category -> definition -> button <Добавить>
 
-            self.name_definition = update.message.text
-            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИИ "{self.selected_category}"__                               .
-\n\nДобавлено определение "{update.message.text}"
-\n\nТеперь введите вопрос к определению, вы будете получать его в рамках опроса."""
-            update.message.reply_text(text=text)
-            self.data_add_definition = '__<ADD_ASK>__'
+            if update.message.text in [str(i) for i in read_from_definitions(p, self.selected_category)]:
+                text = """__ДОБАВЛЕНИЕ  ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ__\n\nВы ввели название уже имеющегося определения. 
+                Введите название нового определения:"""
+                update.message.reply_text(text=text)
+            else:
+                self.name_definition = update.message.text
+                text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                         .
+    \n\nДобавлено определение "{update.message.text}"
+    \n\nТеперь введите вопрос к определению, вы будете получать его в рамках опроса."""
+                update.message.reply_text(text=text)
+                self.data_add_definition = '__<ADD_ASK>__'
 
         elif self.selected_category and self.data_add_definition == '__<ADD_ASK>__':
             # Write the name_definition
 
             self.question_definition = update.message.text
-            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИИ "{self.selected_category}"__                               .
+            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                               .
 \n\nДобавлен вопрос:\n"{update.message.text}"
 \n\nТеперь введите текст самого определения"""
             update.message.reply_text(text=text)
@@ -117,7 +128,7 @@ class Command(BaseCommand):
 
             write_to_definitions(p, self.selected_category, update.message.text,
                                  self.name_definition, self.question_definition)
-            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИИ "{self.selected_category}"__                               .
+            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                               .
 \n\nДобавлено определение:\n"{self.name_definition}"
 \nВопрос: {self.question_definition}\nТекст: {update.message.text}"""
             self.data_add_definition = None
@@ -181,8 +192,9 @@ class Command(BaseCommand):
             reply_markup = get_buttons_cd(read_from_category(p))
             query.edit_message_text(text=text, reply_markup=reply_markup)
 
-        elif not self.selected_definition and self.selected_category and query.data == self.button_back:     #
+        elif not self.var_into_category and self.selected_category and query.data == self.button_back:     #
             # Press button Category -> Назад
+
             reply_markup = get_buttons_cd(read_from_category(p))
             self.selected_category = None
             text = """
@@ -210,15 +222,17 @@ class Command(BaseCommand):
             list_for_buttons = [i for i in read_from_definitions(p, self.selected_category)]
             list_for_buttons.append(self.button_back)
             reply_markup = get_buttons_cd(list_for_buttons)
+            self.var_into_category = 'into_category'
             text = """
             __МЕНЮ ОПРЕДЕЛЕНИЙ__                                                                                     .
             \n\nВыберите определение:
             """
             query.edit_message_text(text=text, reply_markup=reply_markup)
 
-        elif not self.selected_definition and self.selected_category and query.data == self.button_back:
+        elif self.var_into_category == 'into_category' and query.data == self.button_back:
             # Press a Category -> Определения -> Назад
 
+            self.var_into_category = None
             text = f"""__ВНУТРИ КАТЕГОРИИ__                                                                           .
 \n\nВыберете кнопки:"""
             query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
@@ -245,15 +259,12 @@ class Command(BaseCommand):
         elif self.selected_definition and query.data == self.button_back:     # self.selected_category and
             # Press button Category -> Определения -> Press a definition -> Назад
 
-            list_for_buttons = [i for i in read_from_definitions(p, self.selected_category)]
-            list_for_buttons.append(self.button_back)
-            reply_markup = get_buttons_cd(list_for_buttons)
             self.selected_definition = None
             text = """
-            __МЕНЮ ОПРЕДЕЛЕНИЙИЙ__
-            \n\nВыберите определение:
+            __ВНУТРИ КАТЕГОРИИ__
+            \n\nВыберите кнопку:
             """
-            query.edit_message_text(text=text, reply_markup=reply_markup)
+            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
 
         elif self.selected_definition and query.data == self.button_del:
             # Press button Category -> Определения -> Press a definition -> Удалить
@@ -281,6 +292,7 @@ class Command(BaseCommand):
             list_for_buttons.append(self.button_back)
             reply_markup = get_buttons_cd(list_for_buttons)
             query.edit_message_text(text=text, reply_markup=reply_markup)
+            self.var_into_category = 'into_category'
 
         else:
             reply_markup = get_buttons_cd(read_from_category(p))
