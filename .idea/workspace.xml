@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="45bb95ca-3a6d-4c0a-b4d6-d4d63befb19f" name="Default Changelist" comment="55% ready">
+      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/text_strings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/timer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/ask_base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1b7H0Rk4dfM8R0FW26kdkge86PR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <recent name="$PROJECT_DIR$/letuchka/def_base/management" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.timer">
+    <configuration name="bases" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="bot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="keyboards" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="timer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/timer.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="try" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/try.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.timer" />
+        <item itemvalue="Python.bases" />
+        <item itemvalue="Python.try" />
+        <item itemvalue="Python.keyboards" />
+        <item itemvalue="Python.bot" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="45bb95ca-3a6d-4c0a-b4d6-d4d63befb19f" name="Default Changelist" comment="" />
+      <created>1587975988848</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587975988848</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Pip-requirements.txt">
+      <created>1587976272603</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1587976272603</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Created django-admin">
+      <created>1587979680821</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1587979680821</updated>
+    </task>
+    <task id="LOCAL-00003" summary="50% ready">
+      <created>1588491606853</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1588491606853</updated>
+    </task>
+    <task id="LOCAL-00004" summary="55% ready">
+      <created>1588512422398</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1588512422398</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Does to first part.">
+      <created>1588842057664</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1588842057664</updated>
+    </task>
+    <task id="LOCAL-00006" summary="65% ready">
+      <created>1589017704753</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1589017704753</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/letuchka_bot" />
+    </ignored-roots>
+    <MESSAGE value="Pip-requirements.txt" />
+    <MESSAGE value="Created django-admin" />
+    <MESSAGE value="50% ready" />
+    <MESSAGE value="55% ready" />
+    <MESSAGE value="Does to first part." />
+    <MESSAGE value="65% ready" />
+    <option name="LAST_COMMIT_MESSAGE" value="65% ready" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1344" height="168" key="GridCell.Tab.0.bottom" timestamp="1589036837334">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1344" height="168" key="GridCell.Tab.0.bottom/25.23.1415.877@25.23.1415.877" timestamp="1589036837334" />
+    <state width="1344" height="168" key="GridCell.Tab.0.center" timestamp="1589036837333">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1344" height="168" key="GridCell.Tab.0.center/25.23.1415.877@25.23.1415.877" timestamp="1589036837333" />
+    <state width="1344" height="168" key="GridCell.Tab.0.left" timestamp="1589036837333">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1344" height="168" key="GridCell.Tab.0.left/25.23.1415.877@25.23.1415.877" timestamp="1589036837333" />
+    <state width="1344" height="168" key="GridCell.Tab.0.right" timestamp="1589036837334">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1344" height="168" key="GridCell.Tab.0.right/25.23.1415.877@25.23.1415.877" timestamp="1589036837334" />
+    <state width="1373" height="286" key="GridCell.Tab.1.bottom" timestamp="1588103481860">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1373" height="286" key="GridCell.Tab.1.bottom/25.23.1415.877@25.23.1415.877" timestamp="1588103481860" />
+    <state width="1373" height="286" key="GridCell.Tab.1.center" timestamp="1588103481859">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1373" height="286" key="GridCell.Tab.1.center/25.23.1415.877@25.23.1415.877" timestamp="1588103481859" />
+    <state width="1373" height="286" key="GridCell.Tab.1.left" timestamp="1588103481859">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1373" height="286" key="GridCell.Tab.1.left/25.23.1415.877@25.23.1415.877" timestamp="1588103481859" />
+    <state width="1373" height="286" key="GridCell.Tab.1.right" timestamp="1588103481860">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1373" height="286" key="GridCell.Tab.1.right/25.23.1415.877@25.23.1415.877" timestamp="1588103481860" />
+    <state x="241" y="23" key="SettingsEditor" timestamp="1587976481783">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state x="241" y="23" key="SettingsEditor/25.23.1415.877@25.23.1415.877" timestamp="1587976481783" />
+    <state x="397" y="213" width="670" height="676" key="search.everywhere.popup" timestamp="1588941911117">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state x="397" y="213" width="670" height="676" key="search.everywhere.popup/25.23.1415.877@25.23.1415.877" timestamp="1588941911117" />
+  </component>
+</project>

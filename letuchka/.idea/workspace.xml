@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="900add17-d7d1-4e0f-ae7b-9014de53bb8c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/commands/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/commands/bot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/commands/buttons.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/commands/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/management/commands/main_MY.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/migrations/0002_auto_20200427_1225.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/migrations/0003_auto_20200427_1239.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/migrations/0004_auto_20200427_1327.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/migrations/0005_auto_20200427_1350.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/def_base/migrations/0006_remove_definition_category.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/def_base/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/def_base/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/def_base/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/def_base/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/def_base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/def_base/models.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1bAftyr0itxop8ikJeEfiieC22q" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="900add17-d7d1-4e0f-ae7b-9014de53bb8c" name="Default Changelist" comment="" />
+      <created>1588080036033</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588080036033</updated>
+    </task>
+    <servers />
+  </component>
+</project>
