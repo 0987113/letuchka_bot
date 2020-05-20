@@ -279,7 +279,6 @@ async def timer(the_definition_id, ch_id_and_time, profile_id, name_category):
 
 async def send_message(chat_id, message_text):
     print('send message')
-    # tg_token = '1163241015:AAHVLDANNrcw6QDs4pALZcLSKt57bOpCOG0'
 
     foundation_url = "https://telegg.ru/orig/bot" + settings.TG_TOKEN
     url = foundation_url + f"/sendmessage?chat_id={chat_id}&text={message_text}"
