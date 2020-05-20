@@ -16,8 +16,14 @@ from .models import Category
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('id', 'external_id', 'name')
+    list_display = ('id', 'external_id', 'name', 'start')
     form = ProfileForm
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'profile', 'category', 'set_category', 'last_definition')
+    form = CategoryForm
 
 
 @admin.register(Definition)
@@ -28,11 +34,6 @@ class DefAdmin(admin.ModelAdmin):
     '''def get_queryset(self, request):
         return'''
 
-
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'profile', 'category', 'set_category')
-    form = CategoryForm
 
 
 

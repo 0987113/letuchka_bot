@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import logging
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Filters, MessageHandler
-from .keyboards import get_buttons_cd, get_keyboard_into
-from .buttons_handler import validate_weeks, validate_hours, WEEKS_MAP, HOURS_MAP
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, CallbackQueryHandler
+from .keyboards import *
 from .bases import *
+from .buttons_handler import *
+
+# TODO: make button to home
+# TODO: to delete all old messages
 
 
 def log_errors(f):
+    # TODO: Done someone when is exception
 
     def inner(*args, **kwargs):
         try:
@@ -24,123 +28,120 @@ def log_errors(f):
 
 @log_errors
 class Command(BaseCommand):
+    tasks = []
+
     help = 'Телеграм-бот'
     data_add_definition = None
     data_add_category = None
-    data_set = None
+    set_safety = None
     selected_category = None
     selected_definition = None
     name_definition = None
     question_definition = None
     set_category = None
-    var_into_category = None
-    button_back = '<Назад>'
-    button_yes = '<Да>'
-    button_no = '<Нет>'
-    button_del = '<Удалить>'
-    definition = '<Определения>'
-    button_settings = '<Настройка>'
-    buttons_into_category = [
-        definition,
-        button_settings,
-        button_del,
-        button_back
-    ]
-    buttons_into_definition = [
-        button_del,
-        button_back,
-    ]
-    buttons_yes_no = [
-        button_no,
-        button_yes,
-    ]
+    safety_button_back = None
 
     @log_errors
     def do_start(self, update, context):
         p, _ = profile(update, update.message.chat_id)
-        reply_markup = get_buttons_cd(read_from_category(p))
+        reply_markup = get_buttons(read_from_category(p), 'add')
+        write_to_profile_start(p, 'working')   # начинаем работу алгоритма опросов
+        self.safety_button_back = None
+        self.selected_category = None   # сбрасываем нахождение в into_category
         if not _:
-            self.selected_category = None
-            text = '__ВКЛЮЧЕНИЕ__\n\nС Возвращением!\nВыберите Категорию:'
-            update.message.reply_text(text=text, reply_markup=reply_markup)
+            update.message.reply_text(text=text_hello, reply_markup=reply_markup)
         else:
-            self.selected_category = None
-            text = '__ВКЛЮЧЕНИЕ__\n\nДобро пожаловать!\nВыберите Категорию знаний, которые вы будите закреплять\n\n'
-            update.message.reply_text(text=text, reply_markup=reply_markup)
+            update.message.reply_text(text=text_welcome, reply_markup=reply_markup)
+
+    @log_errors
+    def do_stop(self, update, context):
+        p, _ = profile(update, update.message.chat_id)
+        reply_markup = get_buttons(read_from_category(p), 'add')
+        write_to_profile_start(p, 'stopped')  # начинаем работу алгоритма опросов
+        self.safety_button_back = None
+        self.selected_category = None  # сбрасываем нахождение в into_category
+        if not _:
+            update.message.reply_text(text=text_bye, reply_markup=reply_markup)
+        else:
+            print('КОМАНДА СТОП, А ПРОФИЛЬ НЕ В БАЗЕ')
+
+# TODO: заменить все if else на словари
 
     @log_errors
     def do_print(self, update, context):
-        print('do_print')
+        # TODO: Check new buttons on text type
         p, _ = profile(update, update.message.chat_id)
+        print('do_print')
 
-        if not self.selected_category and self.data_add_category == '__<ADD>__':
-            # Press button <Добавить>
+        # есть категория
+        if self.selected_category:
 
-            if update.message.text in [str(i) for i in read_from_category(p)]:
-                text = """__ДОБАВЛЕНИЕ КАТЕГОРИИ__\n\nВы ввели название уже имеющейся категории. 
-                Введите название новой Категории:"""
-                update.message.reply_text(text=text)
-            else:
-                write_to_name_category(p, update.message.text)
-                reply_markup = get_buttons_cd(read_from_category(p))
-                self.data_add_category = None
-                self.selected_category = None
-                text = f"""__МЕНЮ КАТЕГОРИЙ__                                                                         .
-    \n\nДобавлена Категория "{update.message.text}"
-    \n\nВыберите Категорию"""
-                update.message.reply_text(text=text, reply_markup=reply_markup)
+            # есть определение
+            if self.data_add_definition:
 
-        elif self.selected_category and self.set_category and self.data_set == self.button_settings:
-            # Press button Category -> Настройка -> Настройка недели
-            self.set_hours(update, context)
+                # press a category -> definitions -> button <добавить> или <создать>
+                if self.data_add_definition in [Buttons.button_add, Buttons.button_create]:
+                    if update.message.text in [str(i) for i in read_from_definitions(p, self.selected_category)]:
+                        update.message.reply_text(text=text_add_definition_error(self.selected_category))
+                    else:
+                        self.name_definition = update.message.text
+                        update.message.reply_text(
+                            text=text_add_definition_one(self.name_definition, self.selected_category))
+                        self.data_add_definition = '__<ADD_ASK>__'
 
-        elif self.selected_category and self.data_set == self.button_settings:
-            # Press button Category -> Настройка
-            self.set_weeks(update, context)
+                # write the name_definition
+                elif self.data_add_definition == '__<ADD_ASK>__':
+                    self.question_definition = update.message.text
+                    update.message.reply_text(
+                        text=text_add_definition_two(self.question_definition, self.selected_category))
+                    self.data_add_definition = '__<ADD_TEXT>__'
 
-        elif self.selected_category and self.data_add_definition == '__<ADD>__':
-            # Press a category -> definition -> button <Добавить>
+                # write_to_definitions
+                elif self.data_add_definition == '__<ADD_TEXT>__':
+                    write_to_definitions(
+                        p,
+                        self.selected_category,
+                        update.message.text,
+                        self.name_definition,
+                        self.question_definition)   # после этой операции бот завис
+                    reply_markup = get_buttons(read_from_definitions(p, self.selected_category), 'two')
+                    update.message.reply_text(
+                        text=text_add_definition_three(self.name_definition, self.selected_category),
+                        reply_markup=reply_markup)
+                    self.data_add_definition = None
+                    self.name_definition = None
+                    self.question_definition = None
+                    self.safety_button_back = 'from_menu_definition_to_into_category'  # чтобы вернуться в категорию
 
-            if update.message.text in [str(i) for i in read_from_definitions(p, self.selected_category)]:
-                text = """__ДОБАВЛЕНИЕ  ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ__\n\nВы ввели название уже имеющегося определения. 
-                Введите название нового определения:"""
-                update.message.reply_text(text=text)
-            else:
-                self.name_definition = update.message.text
-                text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                         .
-    \n\nДобавлено определение "{update.message.text}"
-    \n\nТеперь введите вопрос к определению, вы будете получать его в рамках опроса."""
-                update.message.reply_text(text=text)
-                self.data_add_definition = '__<ADD_ASK>__'
+            # Работаем с настройками категории
+            elif self.set_safety:
+                print('self.set_safety = ', self.set_safety, 'self.set_category = ', self.set_category)
 
-        elif self.selected_category and self.data_add_definition == '__<ADD_ASK>__':
-            # Write the name_definition
+                if self.set_category and self.set_safety == Buttons.button_settings:
+                    # Press button Category -> Настройка -> Настройка недели
+                    self.set_hours(update)
 
-            self.question_definition = update.message.text
-            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                               .
-\n\nДобавлен вопрос:\n"{update.message.text}"
-\n\nТеперь введите текст самого определения"""
-            update.message.reply_text(text=text)
-            self.data_add_definition = '__<ADD_TEXT>__'
+                # Press button Category -> Настройка (после введеного значения мы проверяем наличие переменной)
+                elif self.set_safety == Buttons.button_settings:
+                    self.set_weeks(update)
 
-        elif self.selected_category and self.data_add_definition == '__<ADD_TEXT>__':
-            # Write the name_definition
+        elif not self.selected_category:
 
-            write_to_definitions(p, self.selected_category, update.message.text,
-                                 self.name_definition, self.question_definition)
-            text = f"""__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ В КАТЕГОРИЮ "{self.selected_category}"__                               .
-\n\nДобавлено определение:\n"{self.name_definition}"
-\nВопрос: {self.question_definition}\nТекст: {update.message.text}"""
-            self.data_add_definition = None
-            self.name_definition = None
-            self.question_definition = None
-            list_for_buttons = [i for i in read_from_definitions(p, self.selected_category)]
-            list_for_buttons.append(self.button_back)
-            reply_markup = get_buttons_cd(list_for_buttons)
-            update.message.reply_text(text=text, reply_markup=reply_markup)
+            # Press button <Добавить> или <Создать> (category)
+            if self.data_add_category in [Buttons.button_add, Buttons.button_create]:
+
+                if update.message.text in [str(i) for i in read_from_category(p)]:
+                    update.message.reply_text(text=text_text_add_category_error)
+                else:
+                    write_to_name_category(p, update.message.text)
+                    reply_markup = get_buttons(read_from_category(p), 'add')
+                    self.data_add_category = None
+                    self.selected_category = None
+                    self.safety_button_back = None  # сбрасываем нахождение в into_category
+                    update.message.reply_text(text=text_show_category, reply_markup=reply_markup)
 
         else:
-            text = f'update.message.text = {update.message.text}\n\nself.data_set = {self.data_set}'
+            text = f'update.message.text = {update.message.text}'
             update.message.reply_text(text)
 
     @log_errors
@@ -150,226 +151,232 @@ class Command(BaseCommand):
         query.answer()
         p, _ = profile(update, update.effective_message.chat_id)
 
-        if not self.selected_category and query.data == '__<ADD>__':
-            # Press button Add
-            # TODO: Filter the same categories
+        # категория выбрана
+        if self.selected_category:
+            print('категория выбрана')
 
-            self.data_add_category = query.data
-            text = """__ДОБАВЛЕНИЕ КАТЕГОРИИ__\n\nВведите название новой Категории:"""
-            query.edit_message_text(text=text)
+            # определение выбрано
+            if self.selected_definition:
+                print('определение выбрано')
 
-        elif query.data in [str(i) for i in read_from_category(p)] and query.data != '__<ADD>__':
-            # Press a Category
+                if query.data == Buttons.button_del:
+                    # Press button Category -> Определения -> Press a definition -> Удалить
+                    query.edit_message_text(
+                        text=text_del_definition_ask(self.selected_category, self.selected_definition),
+                        reply_markup=get_buttons(Buttons.buttons_yes_no, 'None'))
 
-            self.selected_category = query.data
-            text = f"""__ВНУТРИ КАТЕГОРИИ "{self.selected_category}"__                                                 .                                                                              
-\n\nВыбрана Категория "{self.selected_category}"
-\n\nВыберите кнопки:"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
+                elif query.data == Buttons.button_no:
+                    # Press button Category -> Определения -> Press a definition -> Удалить -> Нет
+                    data_definition, question = read_from_definitions_data(p, self.selected_category,
+                                                                           self.selected_definition)
+                    query.edit_message_text(
+                        text=text_into_definition(
+                            self.selected_category,
+                            self.selected_definition,
+                            question,
+                            data_definition),
+                        reply_markup=get_buttons(Buttons.buttons_into_definition, 'back'))
+                    self.safety_button_back = 'into_definition'     # внутри определения
 
-        elif not self.selected_definition and self.selected_category and query.data == self.button_del:
-            # Press button Category -> Удалить
+                # press button category -> определния -> выбрано определение -> удалить -> Да
+                elif query.data == Buttons.button_yes:
+                    delete_definition(p, self.selected_definition)
+                    reply_markup = get_buttons(read_from_definitions(p, self.selected_category), 'two')
+                    query.edit_message_text(
+                        text=text_del_definition_ready(self.selected_category, self.selected_definition),
+                        reply_markup=reply_markup,
+                    )
+                    self.selected_definition = None
+                    self.safety_button_back = 'from_menu_definition_to_into_category'  # чтобы вернуться в категорию
 
-            text = f'__УДАЛЕНИЕ КАТЕГОРИИ__\n\nВы уверены что хотите удалить категорию "{self.selected_category}"?'
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_yes_no))
+                # возвращаемся из press button category -> определения -> press a definition в меню определений
+                elif self.safety_button_back == 'into_definition':
 
-        elif not self.selected_definition and self.selected_category and query.data == self.button_no:
-            # Press button Category -> Удалить -> Нет
+                    # press button category -> определения -> press a definition -> назад
+                    if query.data == Buttons.button_back:
+                        self.selected_definition = None
+                        self.safety_button_back = 'from_menu_definition_to_into_category'  # чтобы вернуться в категорию
+                        query.edit_message_text(
+                            text=text_show_definitions(self.selected_category),
+                            reply_markup=get_buttons(read_from_definitions(p, self.selected_category), 'two'))
 
-            text = f"""__ВНУТРИ КАТЕГОРИИ__                                                                           .
-\n\nВыбрана Категория "{self.selected_category}"
-\n\nВыберите кнопки:"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
+            # определение не выбрано
+            elif not self.selected_definition:
+                print('определение не выбрано')
 
-        elif not self.selected_definition and self.selected_category and query.data == self.button_yes:
-            # Press button Category -> Удалить -> Да
+                # press button category -> удалить
+                if query.data == Buttons.button_del:
+                    print('1')
+                    query.edit_message_text(
+                        text=text_del_category_ask(self.selected_category),
+                        reply_markup=get_buttons(Buttons.buttons_yes_no, 'None'))
 
-            delete_category(p, self.selected_category)
-            self.selected_category = None
-            text = """__МЕНЮ КАТЕГОРИЙ__                                                                             .
-            \n\nКатегория удалена.\n\n
-            Выберите Категорию:"""
-            reply_markup = get_buttons_cd(read_from_category(p))
-            query.edit_message_text(text=text, reply_markup=reply_markup)
+                # Press button Category -> Удалить -> Нет
+                elif query.data == Buttons.button_no:
+                    print('2')
+                    set_questions = read_from_category_set(p, self.selected_category, 'text_result')
+                    query.edit_message_text(
+                        text=text_into_category(self.selected_category, set_questions),
+                        reply_markup=get_buttons(Buttons.buttons_into_category, 'add'))
+                    self.safety_button_back = 'into_category'  # мы внутри категории
 
-        elif not self.var_into_category and self.selected_category and query.data == self.button_back:     #
-            # Press button Category -> Назад
+                # Press button Category -> Определения
+                elif query.data == Buttons.definitions:
+                    print('3_Press button Category -> Определения')
+                    reply_markup = get_buttons(read_from_definitions(p, self.selected_category), 'two')
+                    text = text_show_definitions(self.selected_category)
+                    query.edit_message_text(text=text,
+                                            reply_markup=reply_markup)
+                    self.safety_button_back = 'from_menu_definition_to_into_category'  # чтобы вернуться в категорию
+                    print('safety_button_back', self.safety_button_back)
 
-            reply_markup = get_buttons_cd(read_from_category(p))
-            self.selected_category = None
-            text = """
-            __МЕНЮ КАТЕГОРИЙ__                                                                                       .
-            \n\nВыберите Категорию:'
-            """
-            query.edit_message_text(text=text, reply_markup=reply_markup)
+                # Press button Category -> Удалить -> Да
+                elif query.data == Buttons.button_yes:
+                    print('4')
+                    delete_category(p, self.selected_category)
+                    reply_markup = get_buttons(read_from_category(p), 'add')
+                    query.edit_message_text(
+                        text=text_del_category_ready(self.selected_category),
+                        reply_markup=reply_markup)
+                    self.selected_category = None
+                    self.safety_button_back = None  # сбрасываем нахождение в into_category
 
-        elif self.selected_category and query.data == self.button_settings:
-            # Press button Category -> Настройка
+                # press button category -> настройка
+                elif query.data == Buttons.button_settings:
+                    print('6_Настройка')
+                    self.set_safety = query.data  # Записываем переменную для пропуска в следующую функцию
+                    weeks_map = [f"{key} - {value}" for key, value in WEEKS_MAP.items()]
+                    weeks_map = "\n".join(weeks_map)
+                    query.edit_message_text(text=text_set_category(weeks_map, self.selected_category))
 
-            self.data_set = query.data
-            weeks_map = [f"{key} - {value}" for key, value in WEEKS_MAP.items()]
-            weeks_map = "\n".join(weeks_map)
-            text = f"""__НАСТРОЙКА КАТЕГОРИИ__
-\n\nВыберите дни недели из списка:\n
-Сообщения с определениями будут отправляться с 08:00 до 22:00 с понедельника по пятницу.'
-\n\n{weeks_map}"""
-            query.edit_message_text(text=text)
-            self.set_category = None
+                # Press button Category -> Определения -> button Add
+                elif query.data in [Buttons.button_add, Buttons.button_create]:
+                    print('7_Press button Category -> Определения -> button Add')
+                    self.data_add_definition = query.data
+                    query.edit_message_text(text=text_add_definition(self.selected_category))
 
-        elif self.selected_category and query.data == self.definition:     #
-            # Press button Category -> Определения
+                # Press button Category -> Определения -> Press a definition
+                elif query.data in [str(i) for i in read_from_definitions(p, self.selected_category)]:
+                    print('8')
+                    self.selected_definition = query.data
+                    data_definition, question = read_from_definitions_data(
+                        p,
+                        self.selected_category,
+                        self.selected_definition)
+                    query.edit_message_text(
+                        text=text_into_definition(
+                            self.selected_category,
+                            self.selected_definition,
+                            question,
+                            data_definition),
+                        reply_markup=get_buttons(Buttons.buttons_into_definition, 'back'))
+                    self.safety_button_back = 'into_definition'     # внутри определения
 
-            list_for_buttons = [i for i in read_from_definitions(p, self.selected_category)]
-            list_for_buttons.append(self.button_back)
-            reply_markup = get_buttons_cd(list_for_buttons)
-            self.var_into_category = 'into_category'
-            text = """
-            __МЕНЮ ОПРЕДЕЛЕНИЙ__                                                                                     .
-            \n\nВыберите определение:
-            """
-            query.edit_message_text(text=text, reply_markup=reply_markup)
+                # выходим из category -> определения в into_category
+                elif self.safety_button_back == 'from_menu_definition_to_into_category':
+                    print('выходим из category -> определения в into_category')
 
-        elif self.var_into_category == 'into_category' and query.data == self.button_back:
-            # Press a Category -> Определения -> Назад
+                    # press a category -> определения -> назад
+                    if query.data == Buttons.button_back:
+                        set_questions = read_from_category_set(p, self.selected_category, 'text_result')
+                        query.edit_message_text(
+                            text=text_into_category(self.selected_category, set_questions),
+                            reply_markup=get_buttons(Buttons.buttons_into_category, 'back'))
+                        self.safety_button_back = 'into_category'  # мы внутри категории
 
-            self.var_into_category = None
-            text = f"""__ВНУТРИ КАТЕГОРИИ__                                                                           .
-\n\nВыберете кнопки:"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
+                # выходим из category в меню категорий
+                elif self.safety_button_back == 'into_category':
+                    print('9')
 
-        elif query.data in [str(i) for i in read_from_definitions(p, self.selected_category)] \
-                and query.data != '__<ADD>__':
-            # Press button Category -> Определения -> Press a definition
-            # TODO: Filter the same definitions
+                    # меню категорий -> press button Category -> Назад
+                    if query.data == Buttons.button_back:
+                        reply_markup = get_buttons(read_from_category(p), 'add')
+                        self.selected_category = None
 
-            self.selected_definition = query.data
-            text = f"""__ВНУТРИ ОПРЕДЕЛЕНИЯ__                                                                          .
-\n\nВыбрано определение "{self.selected_definition}"
-\n\nВыберите кнопки:"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_definition))
+                        query.edit_message_text(
+                            text=text_show_category,
+                            reply_markup=reply_markup)
+                        self.safety_button_back = None  # сбрасываем нахождение в into_category
 
-        elif self.selected_category and query.data == '__<ADD>__':
-            # Press button Category -> Определения -> Press a definition -> button Add
+                else:
+                    print('НИЧЕГО НЕ ВЫБРАНО, query.data = ', query.data)
 
-            self.data_add_definition = query.data
-            text = """__ДОБАВЛЕНИЕ ОПРЕДЕЛЕНИЯ__
-            \n\nВведите название нового определения:"""
-            query.edit_message_text(text=text)
+        # категория не выбрана
+        elif not self.selected_category:
+            print('категория не выбрана')
 
-        elif self.selected_definition and query.data == self.button_back:     # self.selected_category and
-            # Press button Category -> Определения -> Press a definition -> Назад
+            # меню категорий -> press button add or create
+            if query.data in [Buttons.button_add, Buttons.button_create]:
+                print('меню категорий -> press button add or create')
+                self.data_add_category = query.data
+                query.edit_message_text(text=text_add_category)
 
-            self.selected_definition = None
-            text = """
-            __ВНУТРИ КАТЕГОРИИ__
-            \n\nВыберите кнопку:
-            """
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_category))
-
-        elif self.selected_definition and query.data == self.button_del:
-            # Press button Category -> Определения -> Press a definition -> Удалить
-
-            text = f"""__УДАЛЕНИЕ ОПРЕДЕЛЕНИЯ__
-\n\nВы уверены что хотите удалить определение "{self.selected_definition}"?"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_yes_no))
-
-        elif self.selected_definition and query.data == self.button_no:
-            # Press button Category -> Удалить -> Нет
-
-            text = f"""__ВНУТРИ ОПРЕДЕЛЕНИЯ__                                                                       .
-\n\nВыбрано определение "{self.selected_definition}"
-\n\nВыберите кнопки:"""
-            query.edit_message_text(text=text, reply_markup=get_keyboard_into(self.buttons_into_definition))
-
-        elif self.selected_definition and query.data == self.button_yes:
-            # Press button Category -> Удалить -> Да
-
-            delete_definition(p, self.selected_definition)
-            self.selected_definition = None
-            text = """__МЕНЮ ОПРЕДЕЛЕНИЙ__                                                                          .
-            \n\nОпределение удалено.\n\nВыберите определение:"""
-            list_for_buttons = [i for i in read_from_definitions(p, self.selected_category)]
-            list_for_buttons.append(self.button_back)
-            reply_markup = get_buttons_cd(list_for_buttons)
-            query.edit_message_text(text=text, reply_markup=reply_markup)
-            self.var_into_category = 'into_category'
+            # меню категорий -> press a category
+            elif query.data in [str(i) for i in read_from_category(p)]:
+                print('меню категорий -> press a category')
+                self.selected_category = query.data
+                set_questions = read_from_category_set(p, self.selected_category, 'text_result')
+                query.edit_message_text(
+                    text=text_into_category(self.selected_category, set_questions),
+                    reply_markup=get_buttons(Buttons.buttons_into_category, 'back'))
+                self.safety_button_back = 'into_category'  # мы внутри категории
 
         else:
-            reply_markup = get_buttons_cd(read_from_category(p))
+            reply_markup = get_buttons(read_from_category(p), 'add')
             text = f'Что-то пошло не так\n\nself.selected_category = ' \
                    f'{self.selected_category}\n\nquery.data = {query.data}'
             query.edit_message_text(text=text, reply_markup=reply_markup)
+            self.safety_button_back = None  # сбрасываем нахождение в into_category
 
     @log_errors
-    def cancel(self, update, context):
-        # user = update.message.from_user
-        # logger.info("User %s canceled the conversation.", user.first_name)
-        update.message.reply_text('Bye! I hope we can talk again some day.')  # reply_markup=ReplyKeyboardRemove())
-
-    @log_errors
-    def set_weeks(self, update, context):
-        print('set_weeks', self.data_set)
-
-        # get weeks
+    def set_weeks(self, update):
         weeks = validate_weeks(text=update.message.text)
-        if weeks is None:
-            text = """
-            __НАСТРОЙКА КАТЕГОРИИ__
-            \n\nПожалуйста, укажите корректный период!
-            """
-            update.message.reply_text(text=text)
-            # self.do_print(update, context)
-            return
-
-        # ask about hours
         hours_map = [f"{key} - {value}" for key, value in HOURS_MAP.items()]
         hours_map = "\n".join(hours_map)
-        text = f"""
-        __НАСТРОЙКА КАТЕГОРИИ__
-\n\nСколько раз за день вы хотите получать сообщения?
-\nВыберите из списка:\n{hours_map}'
-        """
-        update.message.reply_text(text=text)
+        if weeks is None:
+            weeks_map = [f"{key} - {value}" for key, value in WEEKS_MAP.items()]
+            weeks_map = "\n".join(weeks_map)
+            update.message.reply_text(
+                text=text_set_weeks(self.selected_category, 'None', hours_map, weeks_map))
+            return
+        # ask about hours
+        update.message.reply_text(
+            text=text_set_weeks(self.selected_category, 'ok', hours_map, 'None'))
         self.set_category = str(weeks)
 
     @log_errors
-    def set_hours(self, update, context):
-        print('set_hours', self.data_set)
-
-        # get weeks
+    def set_hours(self, update):
+        print('set_hours')
+        # get hours
         hours = validate_hours(text=update.message.text)
         if hours is None:
-            text = """
-            __НАСТРОЙКА КАТЕГОРИИ__
-            \n\nПожалуйста, укажите корректный часовой период!
-            """
-            update.message.reply_text(text=text)
-            # return self.do_print(update, context)
+            hours_map = [f"{key} - {value}" for key, value in HOURS_MAP.items()]
+            hours_map = "\n".join(hours_map)
+            update.message.reply_text(text=text_set_hours(self.selected_category, 'None', 'None', hours_map))
             return
         p, _ = profile(update, update.message.chat_id)
-
-        # ask about hours
-        text = """__ВНУТРИ КАТЕГОРИИ__                                                                              .
-        \n\nНастройки сохранены\nВыберете кнопки"""
-        reply_markup = get_keyboard_into(self.buttons_into_category)
-        update.message.reply_text(text=text, reply_markup=reply_markup)
         self.set_category = self.set_category + ', ' + str(hours)
         write_to_set_category(p, self.selected_category, self.set_category)
+        # ask about hours
+        reply_markup = get_buttons(Buttons.buttons_into_category, 'back')
+        set_questions = read_from_category_set(p, self.selected_category, 'text_result')
+        print('set_questions =', set_questions)
+        update.message.reply_text(
+            text=text_set_hours(self.selected_category, 'ok', set_questions, 'None'),
+            reply_markup=reply_markup)
+        self.set_category = None  # обнуляем для повторного использования
+        self.set_safety = None  # обнуляем для защиты запуска
+        self.safety_button_back = 'into_category'  # мы внутри категории
 
     @log_errors
     def handle(self, *args, **options):
         updater = Updater(token=settings.TG_TOKEN, base_url=settings.TG_PROXY_URL, use_context=True)
-
         updater.dispatcher.add_handler(CommandHandler('start', self.do_start))
-        updater.dispatcher.add_handler(CommandHandler('cancel', self.cancel))
-        updater.dispatcher.add_handler(CallbackQueryHandler(self.button_inline))
+        updater.dispatcher.add_handler(CommandHandler('stop', self.do_stop))
         updater.dispatcher.add_handler(MessageHandler(Filters.text, self.do_print))
+        updater.dispatcher.add_handler(CallbackQueryHandler(self.button_inline))
 
-        # Start the Bot
         updater.start_polling()
-
-        # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
-        # SIGTERM or SIGABRT
         updater.idle()
 
 

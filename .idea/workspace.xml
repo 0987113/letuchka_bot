@@ -20,13 +20,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="45bb95ca-3a6d-4c0a-b4d6-d4d63befb19f" name="Default Changelist" comment="55% ready">
-      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/text_strings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/timer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/letuchka/def_base/migrations/0011_auto_20200514_1939.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/letuchka/def_base/migrations/0012_auto_20200518_0726.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/ask_base.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/buttons_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/buttons_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/text_strings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/timer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/try.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +63,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
@@ -63,8 +71,11 @@
       <recent name="$PROJECT_DIR$/letuchka/def_base/management/commands" />
       <recent name="$PROJECT_DIR$/letuchka/def_base/management" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+    </key>
   </component>
-  <component name="RunManager" selected="Python.timer">
+  <component name="RunManager" selected="Python.bot">
     <configuration name="bases" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="letuchka_bot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -99,27 +110,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="keyboards" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="letuchka_bot" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -170,13 +160,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="try_3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="letuchka_bot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/letuchka/def_base/management/commands" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/letuchka/def_base/management/commands/try_3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.bot" />
+        <item itemvalue="Python.try_3" />
         <item itemvalue="Python.timer" />
         <item itemvalue="Python.bases" />
         <item itemvalue="Python.try" />
-        <item itemvalue="Python.keyboards" />
-        <item itemvalue="Python.bot" />
       </list>
     </recent_temporary>
   </component>
@@ -233,7 +244,21 @@
       <option name="project" value="LOCAL" />
       <updated>1589017704753</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Will be create a second bot">
+      <created>1589319340363</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1589319340363</updated>
+    </task>
+    <task id="LOCAL-00008" summary="55% ready">
+      <created>1589319398101</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1589319398101</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -256,28 +281,29 @@
     <MESSAGE value="Pip-requirements.txt" />
     <MESSAGE value="Created django-admin" />
     <MESSAGE value="50% ready" />
-    <MESSAGE value="55% ready" />
     <MESSAGE value="Does to first part." />
     <MESSAGE value="65% ready" />
-    <option name="LAST_COMMIT_MESSAGE" value="65% ready" />
+    <MESSAGE value="Will be create a second bot" />
+    <MESSAGE value="55% ready" />
+    <option name="LAST_COMMIT_MESSAGE" value="55% ready" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1344" height="168" key="GridCell.Tab.0.bottom" timestamp="1589036837334">
+    <state width="1351" height="211" key="GridCell.Tab.0.bottom" timestamp="1589917823070">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1344" height="168" key="GridCell.Tab.0.bottom/25.23.1415.877@25.23.1415.877" timestamp="1589036837334" />
-    <state width="1344" height="168" key="GridCell.Tab.0.center" timestamp="1589036837333">
+    <state width="1351" height="211" key="GridCell.Tab.0.bottom/25.23.1415.877@25.23.1415.877" timestamp="1589917823070" />
+    <state width="1351" height="211" key="GridCell.Tab.0.center" timestamp="1589917823069">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1344" height="168" key="GridCell.Tab.0.center/25.23.1415.877@25.23.1415.877" timestamp="1589036837333" />
-    <state width="1344" height="168" key="GridCell.Tab.0.left" timestamp="1589036837333">
+    <state width="1351" height="211" key="GridCell.Tab.0.center/25.23.1415.877@25.23.1415.877" timestamp="1589917823069" />
+    <state width="1351" height="211" key="GridCell.Tab.0.left" timestamp="1589917823068">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1344" height="168" key="GridCell.Tab.0.left/25.23.1415.877@25.23.1415.877" timestamp="1589036837333" />
-    <state width="1344" height="168" key="GridCell.Tab.0.right" timestamp="1589036837334">
+    <state width="1351" height="211" key="GridCell.Tab.0.left/25.23.1415.877@25.23.1415.877" timestamp="1589917823068" />
+    <state width="1351" height="211" key="GridCell.Tab.0.right" timestamp="1589917823069">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1344" height="168" key="GridCell.Tab.0.right/25.23.1415.877@25.23.1415.877" timestamp="1589036837334" />
+    <state width="1351" height="211" key="GridCell.Tab.0.right/25.23.1415.877@25.23.1415.877" timestamp="1589917823069" />
     <state width="1373" height="286" key="GridCell.Tab.1.bottom" timestamp="1588103481860">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
@@ -302,5 +328,31 @@
       <screen x="25" y="23" width="1415" height="877" />
     </state>
     <state x="397" y="213" width="670" height="676" key="search.everywhere.popup/25.23.1415.877@25.23.1415.877" timestamp="1588941911117" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py</url>
+          <line>347</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py</url>
+          <line>317</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py</url>
+          <line>9</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

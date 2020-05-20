@@ -5,9 +5,13 @@ class Profile(models.Model):
     external_id = models.PositiveIntegerField(
         verbose_name='Внешний ID пользователя',
         unique=True,
-    )
+)
     name = models.TextField(
         verbose_name='Имя пользователя'
+    )
+    start = models.TextField(
+        verbose_name='Работа профиля',
+        default='None',
     )
 
     def __str__(self):
@@ -32,6 +36,11 @@ class Category(models.Model):
     set_category = models.TextField(
         verbose_name='Параметры',
         default='1, 1',
+    )
+
+    last_definition = models.TextField(
+        verbose_name='Последнее определение',
+        default='None',
     )
 
     def __str__(self):
@@ -60,7 +69,7 @@ class Definition(models.Model):
         verbose_name='Заголовок',
     )
     question = models.TextField(
-        verbose_name='Заголовок',
+        verbose_name='Вопрос',
         default='The question',
     )
 
