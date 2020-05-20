@@ -4,7 +4,7 @@ import sqlite3
 import traceback
 from .buttons_handler import WEEKS_MAP, HOURS_MAP
 
-sys.path.append('/users/denis/github/letuchka_bot/letuchka/')
+sys.path.append('///home/tele/letuchka_bot/letuchka/')
 from def_base.models import Profile
 from def_base.models import Definition
 from def_base.models import Category
@@ -23,23 +23,24 @@ sys.excepthook = log_uncaught_exceptions
 
 def profile(update, chat_id):
     try:
-        print('profile')
-        p, _ = Profile.objects.get_or_create(
+        try:
+            print('profile')
+            p, _ = Profile.objects.get_or_create(
+                    external_id=chat_id,
+                    defaults={
+                        'name': update.message.from_user.username,
+                    }
+                )
+        except AttributeError:
+            p, _ = Profile.objects.get_or_create(
                 external_id=chat_id,
                 defaults={
-                    'name': update.message.from_user.username,
+                    'name': update.callback_query.message.chat.username,
                 }
             )
-    except AttributeError:
-        p, _ = Profile.objects.get_or_create(
-            external_id=chat_id,
-            defaults={
-                'name': update.callback_query.message.chat.username,
-            }
-        )
+        return p, _
     except:
         profile(update, chat_id)
-    return p, _
 
 
 def write_to_profile_start(p, comm):

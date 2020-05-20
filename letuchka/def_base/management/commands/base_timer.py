@@ -1,4 +1,4 @@
-# cd /Users/denis/github/letuchka_bot/letuchka/def_base/management/commands
+# cd /home/tele/letuchka_bot/letuchka/def_base/management/commands
 import time
 import sqlite3
 import asyncio

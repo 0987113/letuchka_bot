@@ -9,12 +9,15 @@ from .keyboards import *
 from .bases import *
 from .buttons_handler import *
 
-# TODO: make button to home
-# TODO: to delete all old messages
+# TODO: прикрутить кнопку домой
+# TODO: удалать вссе неактуальные сообщения бота
+# TODO: PostgreSQL
+# TODO: заменить все if else на словари
 
 
 def log_errors(f):
-    # TODO: Done someone when is exception
+    # TODO: сделать полноценный обработчик исключений и варианты действия в этих случая:
+    #  ошибка базы, сервер молчит
 
     def inner(*args, **kwargs):
         try:
@@ -65,11 +68,9 @@ class Command(BaseCommand):
         else:
             print('КОМАНДА СТОП, А ПРОФИЛЬ НЕ В БАЗЕ')
 
-# TODO: заменить все if else на словари
-
     @log_errors
     def do_print(self, update, context):
-        # TODO: Check new buttons on text type
+        # TODO: проверка входящих данных для имени кнопки
         p, _ = profile(update, update.message.chat_id)
         print('do_print')
 

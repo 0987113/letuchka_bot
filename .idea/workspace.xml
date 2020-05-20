@@ -19,22 +19,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="45bb95ca-3a6d-4c0a-b4d6-d4d63befb19f" name="Default Changelist" comment="55% ready">
-      <change afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/letuchka/def_base/migrations/0011_auto_20200514_1939.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/letuchka/def_base/migrations/0012_auto_20200518_0726.py" afterDir="false" />
+    <list default="true" id="45bb95ca-3a6d-4c0a-b4d6-d4d63befb19f" name="Default Changelist" comment="85% ready">
+      <change beforePath="$PROJECT_DIR$/.idea/letuchka_bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/letuchka_bot.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bases.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/buttons_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/buttons_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/management/commands/keyboards.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/text_strings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/timer.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/management/commands/try.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/letuchka/def_base/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/letuchka/def_base/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pip-requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/pip-requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +251,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589319398101</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="85% ready">
+      <created>1589973209935</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1589973209935</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -285,25 +285,30 @@
     <MESSAGE value="65% ready" />
     <MESSAGE value="Will be create a second bot" />
     <MESSAGE value="55% ready" />
-    <option name="LAST_COMMIT_MESSAGE" value="55% ready" />
+    <MESSAGE value="85% ready" />
+    <option name="LAST_COMMIT_MESSAGE" value="85% ready" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1351" height="211" key="GridCell.Tab.0.bottom" timestamp="1589917823070">
+    <state x="510" y="223" key="FileChooserDialogImpl" timestamp="1589974466073">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1351" height="211" key="GridCell.Tab.0.bottom/25.23.1415.877@25.23.1415.877" timestamp="1589917823070" />
-    <state width="1351" height="211" key="GridCell.Tab.0.center" timestamp="1589917823069">
+    <state x="510" y="223" key="FileChooserDialogImpl/25.23.1415.877@25.23.1415.877" timestamp="1589974466073" />
+    <state width="1351" height="211" key="GridCell.Tab.0.bottom" timestamp="1589975348424">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1351" height="211" key="GridCell.Tab.0.center/25.23.1415.877@25.23.1415.877" timestamp="1589917823069" />
-    <state width="1351" height="211" key="GridCell.Tab.0.left" timestamp="1589917823068">
+    <state width="1351" height="211" key="GridCell.Tab.0.bottom/25.23.1415.877@25.23.1415.877" timestamp="1589975348424" />
+    <state width="1351" height="211" key="GridCell.Tab.0.center" timestamp="1589975348422">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1351" height="211" key="GridCell.Tab.0.left/25.23.1415.877@25.23.1415.877" timestamp="1589917823068" />
-    <state width="1351" height="211" key="GridCell.Tab.0.right" timestamp="1589917823069">
+    <state width="1351" height="211" key="GridCell.Tab.0.center/25.23.1415.877@25.23.1415.877" timestamp="1589975348422" />
+    <state width="1351" height="211" key="GridCell.Tab.0.left" timestamp="1589975348422">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
-    <state width="1351" height="211" key="GridCell.Tab.0.right/25.23.1415.877@25.23.1415.877" timestamp="1589917823069" />
+    <state width="1351" height="211" key="GridCell.Tab.0.left/25.23.1415.877@25.23.1415.877" timestamp="1589975348422" />
+    <state width="1351" height="211" key="GridCell.Tab.0.right" timestamp="1589975348423">
+      <screen x="25" y="23" width="1415" height="877" />
+    </state>
+    <state width="1351" height="211" key="GridCell.Tab.0.right/25.23.1415.877@25.23.1415.877" timestamp="1589975348423" />
     <state width="1373" height="286" key="GridCell.Tab.1.bottom" timestamp="1588103481860">
       <screen x="25" y="23" width="1415" height="877" />
     </state>
@@ -334,13 +339,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py</url>
-          <line>347</line>
+          <line>348</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/bot.py</url>
-          <line>317</line>
-          <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/letuchka/def_base/management/commands/base_timer.py</url>
